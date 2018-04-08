@@ -1,0 +1,50 @@
+alias ls="ls -G"
+
+if echo hello|grep --color=auto l >/dev/null 2>&1; then
+  export GREP_OPTIONS='--color=auto' GREP_COLOR='1;31'
+fi
+
+# program completion
+shopt -s progcomp
+
+export EDITOR=vim
+
+#export PATH="/usr/local/bin/thrift:/usr/local/bin/wireshark:/usr/local/bin/apache-ant-1.8.0RC1/bin:~/bin:/usr/local/bin:$PATH:/opt/local/sbin:/opt/local/bin:~/projects/arcanist/arcanist/bin:/usr/local/bin/thrift"
+#export PATH="~/bin:/usr/local/bin:$PATH:/opt/local/sbin:/opt/local/bin:/"
+
+alias guw='cd ~/workspace"
+
+# history settings
+export HISTFILESIZE=1000000000
+export HISTSIZE=1000000
+export HISTTIMEFORMAT="%F %T "
+set cmdhist
+shopt -s histappend
+
+# history everwhere (not per shell!)
+PROMPT_COMMAND="history -a; history -n"
+
+# bind up to search history
+bind '"\e[A": history-search-backward'
+
+function git_diff() {
+  git diff --no-ext-diff "$@" | vim -R -
+}
+
+PS1='${debian_chroot:+($debian_chroot)}\[\033[00;37m\]@\[\033[00;32m\]\h\[\033[00;33m\]$\[\033[01;37m\]\[\033[00;37m\]:\[\033[01;34m\]\w\[\033[00;37m\]\[\e[0m\]\$ '
+
+# must put in full path instead of ~
+export PYTHONSTARTUP=/Users/dmitry1/.pythonstartup.py
+
+# bash completion??
+if [ -f `brew --prefix`/etc/bash_completion ]; then
+  . `brew --prefix`/etc/bash_completion
+fi
+
+function vimf() {
+    vim $(find . -name $@)
+}
+
+function ff() {
+    find . -name $@
+}
