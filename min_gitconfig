@@ -1,0 +1,33 @@
+[user]
+  name = Dmitry Chechik
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+[diff]
+  external = git_diff_wrapper
+  tool = vimdiff
+
+[pager]
+  diff =
+
+[alias]
+  st = status
+  ci = commit
+  br = branch
+  brr = for-each-ref --sort=committerdate refs/heads/ --format="%1B[2;32m%(refname:short)%1B[0m%1B[40G%(subject)"
+  co = checkout
+  df = diff
+  lg = log -p
+  who = shortlog -s --
+  amend = commit -a --amend
+  qamend = commit -a --amend -C HEAD
+  me = "!sh -c 'git-me'"
+  fnr = "!sh -c 'git-fetch upstream; git rebase upstream/master'"
+  brr = for-each-ref --count=20 --sort=-committerdate refs/heads/ --format="%1B[2;32m%(refname:short)%1B[0m%1B[40G%(subject)"
+  sync = "!git fetch origin && git rebase origin/master"
+  feature = checkout --track origin/master -b
+[mergetool "persistent"]
+  cmd = "vim -f -d \"$MERGED\" \"$LOCAL\""
+[merge]
+  tool = persistent
