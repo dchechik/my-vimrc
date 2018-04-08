@@ -3,9 +3,9 @@ autocmd FileType * set formatoptions=tcql nocindent comments&
 
 autocmd FileType java,c,cc,cpp,sqc set formatoptions=croql cindent comments=sr:/*,mb:*,ex:*/,://
 set expandtab
-set shiftwidth=2
-set softtabstop=2
-set tabstop=2
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
 
 :set showmatch
 :set ruler
@@ -51,17 +51,17 @@ else
     map ,vsp :vsp <C-R>=expand("%:p:h") . "\" <CR>
 endif
 
-set path=.,~/tellapart/dev/tellapart/rye,~/tellapart/dev/tellapart/thrift
+set path=.
 
 set incsearch
 set winminheight=0
 set winheight=9999
 
 source ~/.vim/supertab.vim
-source ~/.vim/plugin/conque_term.vim
-source ~/.vim/conque_term.vim
+""source ~/.vim/plugin/conque_term.vim
+""source ~/.vim/conque_term.vim
 source ~/.vim/thrift.vim
-source ~/.vim/python_fn.vim
+"" source ~/.vim/python_fn.vim
 
 "" highlight RedundantSpaces ctermbg=red guibg=red
 highlight RedundantSpaces ctermbg=blue guibg=blue
@@ -105,11 +105,11 @@ filetype plugin indent on
 
 " Supertab settings
 " supertab + eclim == java win
-let g:SuperTabDefaultCompletionType = 'context'
-let g:SuperTabCompletionContexts = [ 's:ContextText', 's:ContextDiscover']
-let g:SuperTabDefaultCompletionTypeDiscovery = [ "&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>" ]
-"" #let g:SuperTabContextDefaultCompletionType = "<c-x><c-i>"
-let g:SuperTabLongestHighlight = 1
+"let g:SuperTabDefaultCompletionType = 'context'
+"let g:SuperTabCompletionContexts = [ 's:ContextText', 's:ContextDiscover']
+"let g:SuperTabDefaultCompletionTypeDiscovery = [ "&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>" ]
+""" #let g:SuperTabContextDefaultCompletionType = "<c-x><c-i>"
+"let g:SuperTabLongestHighlight = 1
 
 " turn off context super tab for python since we don't have vim compiled with
 " python.
@@ -119,23 +119,23 @@ let g:SuperTabLongestHighlight = 1
 
 " Eclim settings
 " ,i imports whatever is needed for current line
-nnoremap <silent> ,i :JavaImport<cr>
+"nnoremap <silent> ,i :JavaImport<cr>
 " ,im imports all missing
-nnoremap <silent> ,im :JavaImportMissing<cr>
+"nnoremap <silent> ,im :JavaImportMissing<cr>
 " ,ic cleans and imports
-nnoremap <silent> ,ic :JavaImportClean<cr>:JavaImportSort<cr>
+"nnoremap <silent> ,ic :JavaImportClean<cr>:JavaImportSort<cr>
 " ,d opens javadoc for statement in browser
-nnoremap <silent> ,d :JavaDocSearch -x declarations<cr>
+"nnoremap <silent> ,d :JavaDocSearch -x declarations<cr>
 " ,<enter> searches context for statement
-nnoremap <silent> ,<cr> :JavaSearchContext<cr>
+"nnoremap <silent> ,<cr> :JavaSearchContext<cr>
 " ,jv validates current java file
-nnoremap <silent> ,jv :Validate<cr>
+"nnoremap <silent> ,jv :Validate<cr>
 " ,jc shows corrections for the current line of java
-nnoremap <silent> ,jc :JavaCorrect<cr>
+"nnoremap <silent> ,jc :JavaCorrect<cr>
 " ,lc opens file
-nnoremap <silent> ,lc :LocateFile<cr>
+"nnoremap <silent> ,lc :LocateFile<cr>
 " 'open' on OSX will open the url in the default browser without issue
-let g:EclimBrowser='open'
+"let g:EclimBrowser='open'
 "split explorer vertically
 let g:netrw_altv = 1
 " tree style listing
@@ -144,8 +144,8 @@ let g:netrw_winsize = 30
 let g:netrw_browse_split=4
 
 "let g:EclimLocatFileDefaultAction = "vsplit"
-let g:EclimLocatFileDefaultAction = ":vsplit"
-let g:EclimJavaImportPackageSeparationLevel = 1
+"let g:EclimLocatFileDefaultAction = ":vsplit"
+"let g:EclimJavaImportPackageSeparationLevel = 1
 
 set bg=dark
 set autoread
@@ -166,3 +166,42 @@ source ~/.vim/csv.vim
 if has("gui")
   source ~/.vim/ropevim.vim
 endif
+
+" Supertab settings
+" supertab + eclim == java win
+""let g:SuperTabDefaultCompletionType = "context"
+"let g:SuperTabCompletionContexts = [ 's:ContextText', 's:ContextDiscover']
+"let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
+""let g:SuperTabContextTextOmniPrecedence = ['&completefunc', '&omnifunc', "<c-n><c-p>"]
+"let g:SuperTabDefaultCompletionTypeDiscovery = [ "&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>" ]
+""" #let g:SuperTabContextDefaultCompletionType = "<c-x><c-i>"
+"let g:SuperTabLongestHighlight = 1
+
+" For command-T
+nnoremap <silent> ,lc :CommandT<CR>
+let g:CommandTAcceptSelectionMap=['<C-g>']
+let g:CommandTAcceptSelectionSplitMap=['<CR>', '<C-g>']
+
+
+"" au FileType python set omnifunc=pythoncomplete#Complete
+"" let g:SuperTabDefaultCompletionType = "context"
+
+
+
+func GitGrep(...)
+  let save = &grepprg
+  set grepprg=git\ grep\ -n\ $*
+  let s = 'grep'
+  for i in a:000
+    let s = s . ' ' . i
+  endfor
+  exe s
+  let &grepprg = save
+endfun
+command -nargs=? G call GitGrep(<f-args>)
+
+
+" Highlight word at cursor without changing position
+"nnoremap ,h *<C-O>
+" Highlight word at cursor and then Ack it.
+" doesn't worknnoremap ,H *<C-O>:G<CR>
